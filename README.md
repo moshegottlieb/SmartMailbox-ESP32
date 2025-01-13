@@ -24,6 +24,6 @@ However, I couldn’t make the magnets stick. I’m a software guy and terrible 
 * DC to DC stepdown buck, with 3.3v and 5v output
 * 2x ultra sonic sensors (HC-SR04)
 
-![ESP32C6 dev board](https://raw.githubusercontent.com/moshegottlieb/libsense/SmartMailbox-ESP32/master/images/esp32c6.jpg)
+![ESP32C6 dev board](https://raw.githubusercontent.com/moshegottlieb/SmartMailbox-ESP32/master/images/esp32c6.jpg)
 ![HC-SR04 ultrasonic sensor](https://raw.githubusercontent.com/moshegottlieb/SmartMailbox-ESP32/master/images/ultrasonic.jpg)
 ![Battery pack](https://raw.githubusercontent.com/moshegottlieb/SmartMailbox-ESP32/master/images/battery-pack.jpg)
