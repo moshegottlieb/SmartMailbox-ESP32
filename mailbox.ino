@@ -4,6 +4,7 @@
 #ifndef RGB_STATE_PERIPHERAL
 #include "RGBLED.h"
 #endif
+#include "IRsensor.h"
 
 Peripheral* pPeripheral = nullptr;
 #ifndef RGB_STATE_PERIPHERAL
@@ -13,18 +14,33 @@ RGBLED* pRGB = nullptr;
 // add as many as you want here.
 // the more the merrier
 // {echo pin, trigger pin}
-uint8_t HCSR04_PAIRS[][2] = { {21,20}, {23,22} };
+uint8_t HCSR04_PAIRS[][2] ={}; // { {21,20}, {23,22} };
 UltraSonicSensor** sensors = nullptr;
 uint8_t sensor_count = (uint8_t) (sizeof(HCSR04_PAIRS) / (sizeof(uint8_t)*2));
+
+uint8_t TCRT5000_PAIRS[][2] = { // power,signal
+  {4,15},
+  {5,23},
+  {6,22},
+  {7,21},
+  {0,20},
+};
+
+IRSensor** irsensors = nullptr;
+uint8_t irsensor_count = (uint8_t) (sizeof(TCRT5000_PAIRS) / (sizeof(uint8_t)*2));
 
 void setup() {
   Serial.begin(115200);  // Initialize serial communication at 115200 baud
   Serial.println("Starting up");
   // Create an array of sensor pointers
   sensors = (UltraSonicSensor**)malloc(sizeof(UltraSonicSensor*) * sensor_count);
+  irsensors = (IRSensor**)malloc(sizeof(IRSensor*) * irsensor_count);
   // Initialize the array
   for (uint8_t i=0;i<sensor_count;++i){
     sensors[i] = new UltraSonicSensor(HCSR04_PAIRS[i][0],HCSR04_PAIRS[i][1]);
+  }
+  for (uint8_t i=0;i<irsensor_count;++i){
+    irsensors[i] = new IRSensor(TCRT5000_PAIRS[i][0],TCRT5000_PAIRS[i][1]);
   }
   // the more the merrier
 #ifndef RGB_STATE_PERIPHERAL
@@ -48,6 +64,17 @@ bool hasLetter(){
     }
   }
   // Thresholds within limits
+  // check IR sensors
+
+  for (uint8_t i=0;i<irsensor_count;++i){
+    if (irsensors[i]->proximity()){
+      Serial.print("IR Sensor ");
+      Serial.print(i);
+      Serial.println(" proximity detected");
+      return true;
+    }
+  }
+  // no proxmity found
   return false;
 }
 
